@@ -1,0 +1,139 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'java-library'
+    id 'maven-publish'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'org.sonarqube' version '4.4.1.3373'
+    id 'org.owasp.dependencycheck' version '9.0.9'
+}
+
+group = 'com.company.project'
+version = properties.projectVersion
+description = 'PN Common Library'
+
+java {
+    sourceCompatibility = '21'
+    withJavadocJar()
+    withSourcesJar()
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    gradlePluginPortal()
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            pom {
+                name = 'PN Common Library (java 21)'
+                description = 'Common Library for PN'
+                url = 'https://gitlab.company.com/company-pn/springboot-microservice-common-lib'
+            }
+        }
+    }
+    repositories {
+        maven {
+            name "GitLab"
+            url "https://gitlab.company.com/api/v4/projects/${gitlabProjectId}/packages/maven"
+            credentials(HttpHeaderCredentials) {
+                name = 'Deploy-Token'
+                value = gitlabDeployToken
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
+    }
+}
+
+ext {
+    set('springCloudVersion', "2023.0.3")
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-aop"
+    implementation "io.micrometer:micrometer-tracing-bridge-otel"
+    implementation "io.opentelemetry:opentelemetry-exporter-otlp"
+    runtimeOnly "io.micrometer:micrometer-registry-prometheus"
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+    implementation "io.github.openfeign:feign-okhttp"
+    implementation "io.github.openfeign:feign-micrometer"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocStarterVersion}"
+    implementation "net.logstash.logback:logstash-logback-encoder:${logstashLogbackVersion}"
+    implementation "org.apache.commons:commons-text:${apacheCommonsTextVersion}"
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    implementation "net.ttddyy.observation:datasource-micrometer-spring-boot:${datasourceMicrometerVersion}"
+    implementation "org.codehaus.janino:janino:${codehausJaninoVersion}"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+bootJar {
+    enabled = false
+}
+
+checkstyle {
+    toolVersion '10.14.2'
+    configDirectory = file("${rootProject.projectDir}/src/main/resources")
+}
+
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')  // disabled javadoc warnings
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'com/company/project/common/aop/**',
+                    'com/company/project/common/config/**',
+                    'com/company/project/common/exception/**',
+                    'com/company/project/common/filter/**',
+                    'com/company/project/common/interceptor/**',
+                    'com/company/project/common/messaging/**',
+                    'com/company/project/common/model/**',
+                    'com/company/project/common/util/**'
+            ])
+        }))
+    }
+
+    sonar {
+        properties {
+            property 'sonar.coverage.exclusions',
+                    "**/aop/**," +
+                            "**/config/**," +
+                            "**/exception/**," +
+                            "**/filter/**," +
+                            "**/interceptor/**," +
+                            "**/messaging/**," +
+                            "**/model/**," +
+                            "**/logging/**," +
+                            "**/util/**"
+        }
+    }
+}

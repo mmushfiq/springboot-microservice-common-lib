@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property resource="application.yaml" />
+    <springProperty scope="context" name="maskingEnabled" source="common.log-masking.enabled"/>
+
+    <springProfile name="default">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <if condition='property("maskingEnabled").equals("true")'>
+                    <then>
+                        <jsonGeneratorDecorator class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+                            <valueMasker class="com.company.project.common.logging.CustomLogFieldMasker">
+                                <panProperty>\b(pan|value|receiverPan|senderPan|token)\s*[:=]?\s*(\d{6}\d{6,9}\d{4})\b</panProperty>
+                                <messageProperty>\bcvv\s*[:=]?\s*([^,\\)]+)|password\s*[:=]?\s*([^,\\)]+)\b</messageProperty>
+                            </valueMasker>
+                        </jsonGeneratorDecorator>
+                    </then>
+                </if>
+                <providers>
+                    <provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
+                    <timestamp/>
+                    <mdc/>
+                    <logLevel/>
+                    <callerData>
+                        <classFieldName>class</classFieldName>
+                        <methodFieldName>method</methodFieldName>
+                        <lineFieldName>line</lineFieldName>
+                        <fileFieldName>fileName</fileFieldName>
+                    </callerData>
+                    <threadName>
+                        <fieldName>thread</fieldName>
+                    </threadName>
+                    <stackTrace/>
+                    <pattern>
+                        <pattern>
+                            {
+                            "pid": "${PID}"
+                            }
+                        </pattern>
+                    </pattern>
+                    <message/>
+                </providers>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <springProfile name="!default">
+        <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <root level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
