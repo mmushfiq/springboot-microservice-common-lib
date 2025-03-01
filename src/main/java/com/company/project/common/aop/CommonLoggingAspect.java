@@ -122,7 +122,8 @@ public class CommonLoggingAspect {
 
     private void logMessagingEvent(JoinPoint joinPoint, String eventId, String eventType) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        Map<String, Object> params = LoggerUtil.getParamsAsMap(methodSignature.getParameterNames(), joinPoint.getArgs());
+        Map<String, Object> params =
+                LoggerUtil.getParamsAsMap(methodSignature.getParameterNames(), joinPoint.getArgs());
         log.debug("[EVENT]  | EventType: {} | EventId: {} | [{}] | Params: {}",
                 v(EVENT_TYPE, eventType), v(EVENT_ID, eventId), methodName(joinPoint), params);
     }
