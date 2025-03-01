@@ -1,10 +1,16 @@
 # Spring Boot Microservice Common Library
 
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-brightgreen)
+![JDK](https://img.shields.io/badge/JDK-21-blue)
+![Gradle](https://img.shields.io/badge/Gradle-8.6-orange)
+![SpringDoc OpenAPI](https://img.shields.io/badge/springdoc--openapi-2.4.0-yellowgreen)
+![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-1.37.0-purple)
+![Checkstyle](https://img.shields.io/badge/Checkstyle-10.14.2-cyan)
 ![GitHub](https://img.shields.io/github/license/isopropylcyanide/Jwt-Spring-Security-JPA?color=blue)
 
 A comprehensive common library built with Spring Boot 3.3 and Java 21, designed to streamline and standardize the development of microservices within your projects.
 
-PN - project name or project name abbreviation
+`{PN}` - _project name or project name abbreviation_
 
 ## Features
 
