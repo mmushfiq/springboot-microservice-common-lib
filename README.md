@@ -52,6 +52,25 @@ A comprehensive common library built with **Spring Boot 3.3** and **Java 21**, d
 
 - **Standardized Configuration Files**: Includes common `checkstyle.xml` and `logback.xml` files. Housing these files in the common library ensures that microservices consume them in a read-only manner, preventing unauthorized modifications and maintaining uniformity across projects.
 
+
+**Note.** By default, all these configurations are enabled. You can disable any of them in your microservice's `application.yaml` file as needed.
+
+```yaml
+common:
+  logging:
+    enabled: true
+  error-handler:
+    enabled: true
+  swagger:
+    enabled: true
+  openfeign:
+    enabled: true
+  interceptor:
+    enabled: true
+  opentelemetry:
+    enabled: true
+```
+
 ## Usage Configuration
 
 To incorporate the common library into your project, add the following dependency:
