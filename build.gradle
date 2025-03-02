@@ -38,22 +38,19 @@ publishing {
         maven(MavenPublication) {
             from components.java
             pom {
-                name = 'PN Common Library (java 21)'
+                name = 'PN Common Library (Java 21)'
                 description = 'Common Library for PN'
-                url = 'https://gitlab.company.com/company-pn/springboot-microservice-common-lib'
+                url = 'https://github.com/mmushfiq/springboot-microservice-common-lib'
             }
         }
     }
     repositories {
         maven {
-            name "GitLab"
-            url "https://gitlab.company.com/api/v4/projects/${gitlabProjectId}/packages/maven"
-            credentials(HttpHeaderCredentials) {
-                name = 'Deploy-Token'
-                value = gitlabDeployToken
-            }
-            authentication {
-                header(HttpHeaderAuthentication)
+            name = "GitHub"
+            url = uri("https://maven.pkg.github.com/mmushfiq/springboot-microservice-common-lib")
+            credentials {
+                username = System.getenv("GPR_USER") ?: project.findProperty("gpr.user") ?: ""
+                password = System.getenv("GPR_TOKEN") ?: project.findProperty("gpr.token") ?: ""
             }
         }
     }
