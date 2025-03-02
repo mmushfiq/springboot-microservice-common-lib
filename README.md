@@ -8,7 +8,7 @@
 ![Checkstyle](https://img.shields.io/badge/Checkstyle-10.14.2-cyan)
 ![GitHub](https://img.shields.io/github/license/isopropylcyanide/Jwt-Spring-Security-JPA?color=blue)
 
-A comprehensive common library built with Spring Boot 3.3 and Java 21, designed to streamline and standardize the development of microservices within your projects.
+A comprehensive common library built with **Spring Boot 3.3** and **Java 21**, designed to streamline and standardize the development of microservices within your projects.
 
 `{PN}` - _project name or project name abbreviation_
 
@@ -66,9 +66,9 @@ implementation "com.company.project:springboot-microservice-common-lib:${pnCommo
 
 ```xml
 <dependency>
-<groupId>com.company.project</groupId>
-<artifactId>springboot-microservice-common-lib</artifactId>
-<version>${pnCommonLibVersion}</version>
+    <groupId>com.company.project</groupId>
+    <artifactId>springboot-microservice-common-lib</artifactId>
+    <version>${pnCommonLibVersion}</version>
 </dependency>
 ```
 
