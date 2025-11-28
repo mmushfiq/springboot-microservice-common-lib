@@ -95,18 +95,8 @@ implementation "com.company.project:springboot-microservice-common-lib:${pnCommo
 **Note:** This common library is not yet available in the central repository. To use it locally, clone this repository and execute `gradle publishToMavenLocal` to publish it to your local Maven repository.
 
 ### Bean Detection Configuration
-To ensure that Spring detects and registers the beans provided by this common library, add the following class to the config package of your microservice:
-
-```java
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@ComponentScan(basePackages = "com.company.project.common")
-public class CommonLibScannerConfig {
-}
-```
-This will enable automatic scanning and registration of common library components.
+The Common Library provides Spring Boot auto-configuration, so you do not need to manually add any @ComponentScan in your microservice.
+When the library is on the classpath all components, services, and configurations inside com.company.project.common are automatically detected and registered.
 
 
 ## Reference Implementation

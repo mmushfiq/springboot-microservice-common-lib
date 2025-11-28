@@ -81,6 +81,9 @@ dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     implementation "net.ttddyy.observation:datasource-micrometer-spring-boot:${datasourceMicrometerVersion}"
     implementation "org.codehaus.janino:janino:${codehausJaninoVersion}"
+
+    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 
 dependencyManagement {
